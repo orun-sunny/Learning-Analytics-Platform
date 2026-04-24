@@ -1,65 +1,127 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import Image from "next/image";
+import { UserCircle, Briefcase } from "lucide-react";
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center font-sans tracking-tight">
+        <div className="flex flex-col items-center gap-6 animate-in fade-in zoom-in duration-1000">
+          <div className="w-[120px] h-10 relative">
+            <Image
+              src="/assets/phlogo.svg"
+              alt="Programming Hero"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <h1 className="text-2xl font-bold text-slate-800">
+              Programming Hero
+            </h1>
+            <div className="w-12 h-1 bg-[#6633FF] rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-[#F3F4F6] flex items-center justify-center p-6 font-sans">
+      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col md:flex-row min-h-[480px] border border-gray-100">
+        {/* Left Side: Branding */}
+        <div className="md:w-1/2 p-12 bg-[#6633FF] flex flex-col justify-center items-center text-center">
+          <div className="w-[120px] h-10 relative mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <Image
+              src="/assets/phlogo.svg"
+              alt="Programming Hero"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <h1 className="text-3xl font-bold text-white mb-4">
+            Online Assessment
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-white/80 text-base leading-relaxed max-w-[280px]">
+            The premium platform for conducting secure and scalable online
+            assessments.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Right Side: Selection */}
+        <div className="md:w-1/2 p-12 flex flex-col justify-center bg-white">
+          <div className="mb-10 text-center md:text-left">
+            <h2 className="text-2xl font-bold text-slate-800">
+              Select your portal
+            </h2>
+            <p className="text-slate-400 text-sm mt-1">
+              Access your respective dashboard below
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <Link
+              href="/employer/login"
+              className="group flex items-center p-5 border-2 border-gray-100 rounded-xl hover:border-[#6633FF] hover:bg-[#6633FF]/5 transition-all duration-200"
+            >
+              <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-[#6633FF] transition-colors">
+                <Briefcase className="w-6 h-6 text-slate-400 group-hover:text-white" />
+              </div>
+              <div className="ml-4">
+                <span className="block text-slate-700 font-bold text-base group-hover:text-[#6633FF]">
+                  Instructor Login
+                </span>
+                <span className="block text-slate-400 text-xs">
+                  Manage tests & candidates
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/candidate/login" // Update the path to match your candidate login route
+              className="group flex items-center p-5 border-2 border-gray-100 rounded-xl hover:border-[#6633FF] hover:bg-[#6633FF]/5 transition-all duration-200"
+            >
+              <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-[#6633FF] transition-colors">
+                <UserCircle className="w-6 h-6 text-slate-400 group-hover:text-white" />
+              </div>
+              <div className="ml-4">
+                <span className="block text-slate-700 font-bold text-base group-hover:text-[#6633FF]">
+                  Candidate Login
+                </span>
+                <span className="block text-slate-400 text-xs">
+                  Take assessment tests
+                </span>
+              </div>
+            </Link>
+          </div>
+
+          {/* Professional Branding */}
+          <div className="mt-12 pt-8 border-t border-gray-50 flex items-center justify-center gap-3">
+            <span className="text-slate-300 text-[10px] font-bold uppercase tracking-widest">
+              Powered By
+            </span>
+            <div className="w-16 h-4 relative opacity-60">
+              <Image
+                src="/assets/phlogo.svg"
+                alt="Programming Hero Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
