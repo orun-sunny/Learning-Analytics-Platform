@@ -72,7 +72,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-4">
             <Link
-              href="/employer/login"
+              href="/instructor/login"
               className="group flex items-center p-5 border-2 border-gray-100 rounded-xl hover:border-[#6633FF] hover:bg-[#6633FF]/5 transition-all duration-200"
             >
               <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-[#6633FF] transition-colors">
