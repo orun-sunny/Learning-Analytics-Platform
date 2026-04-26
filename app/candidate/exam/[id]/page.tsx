@@ -270,7 +270,11 @@ export default function ExamScreen({
                           Submitted: {submission.submittedAt}
                         </p>
                       </div>
-                      <span className="inline-flex w-fit items-center gap-1 rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                      <span className={`inline-flex w-fit items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${
+                        submission.status === 'Accepted' ? 'bg-green-100 text-green-700' :
+                        submission.status === 'Needs Improvement' ? 'bg-amber-100 text-amber-700' :
+                        'bg-blue-100 text-blue-700'
+                      }`}>
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         {submission.status}
                       </span>

@@ -33,7 +33,7 @@ export default function CandidateLogin() {
     //  API call
     setTimeout(() => {
       login({
-        id: "stu_" + Math.random().toString(36).substr(2, 9),
+        id: "stu_sample_1", // Use consistent ID for demo purposes
         name: "Student",
         email: data.email,
         role: "student",

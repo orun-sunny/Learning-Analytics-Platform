@@ -17,7 +17,7 @@ export default function EmployerLayout({
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!isAuthenticated && pathname !== "/intructor/login") {
+    if (!isAuthenticated && pathname !== "/instructor/login") {
       router.push("/");
     } else if (
       isAuthenticated &&

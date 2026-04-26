@@ -99,6 +99,44 @@ export default function CandidateDashboard() {
         </div>
       </div>
 
+      {mySubmissions.length > 0 && (
+        <div className="flex flex-col gap-4 mt-4">
+          <span className="text-slate-700 text-xl font-bold">
+            Recent Feedback & Submissions
+          </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {mySubmissions.slice(0, 3).map((submission) => {
+              const assignment = assignments.find((a) => a.id === submission.assignmentId);
+              return (
+                <div key={submission.id} className="bg-white rounded-xl border border-gray-200 p-5 flex flex-col gap-3 hover:shadow-md transition-all">
+                  <div className="flex justify-between items-start gap-2">
+                    <p className="text-sm font-bold text-slate-800 line-clamp-2 flex-1">
+                      {assignment?.title || "Unknown Assignment"}
+                    </p>
+                    <span className={`shrink-0 inline-flex items-center gap-1 rounded-full px-2 py-1 text-[10px] font-medium ${
+                      submission.status === 'Accepted' ? 'bg-green-100 text-green-700' :
+                      submission.status === 'Needs Improvement' ? 'bg-amber-100 text-amber-700' :
+                      'bg-blue-100 text-blue-700'
+                    }`}>
+                      {submission.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500">
+                    Submitted: {submission.submittedAt}
+                  </p>
+                  <div className="mt-auto bg-slate-50 rounded-lg p-3 border border-slate-100">
+                    <p className="text-xs font-semibold text-[#6633FF] mb-1">Instructor Note:</p>
+                    <p className="text-xs text-slate-600 line-clamp-3">
+                      {submission.feedback || "Pending instructor review..."}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {filteredAssignments.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 bg-white rounded-3xl border border-solid border-gray-100 shadow-sm animate-in fade-in zoom-in duration-500">
           <div className="w-[180px] h-[130px] relative mb-8">
