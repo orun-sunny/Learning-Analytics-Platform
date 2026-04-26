@@ -47,3 +47,5 @@ To help instructors quickly identify struggling students and optimize their teac
    Because this application uses Local Storage to persist data instead of a backend database, **you must test the Instructor and Candidate flows in the exact same browser window**. If you open the Instructor portal in Chrome and the Candidate portal in an Incognito window, they will not share the same local storage state.
 
    *Flow: Log in as Candidate -> Submit Assignment -> Logout -> Log in as Instructor -> Review -> Logout -> Log in as Candidate -> View Feedback.*
+   *Use email: [admin@gmail.com] and password:admin@gmail.com for both roles, just switch between them by logging out and logging in with the same email and password. 
+   
