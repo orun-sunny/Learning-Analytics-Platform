@@ -15,6 +15,8 @@ import {
 import { useLearningStore } from "@/store/learningStore";
 import { DifficultyLevel, SubmissionStatus } from "@/types";
 
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+
 export default function EmployerDashboard() {
   const {
     assignments,
@@ -81,6 +83,20 @@ export default function EmployerDashboard() {
 
   const statusStats = getSubmissionStatusStats();
   const totalSubmissions = submissions.length || 1;
+
+  const statusChartData = [
+    { name: 'Accepted', value: statusStats['Accepted'], color: '#22c55e' },
+    { name: 'Pending', value: statusStats['Pending'], color: '#3b82f6' },
+    { name: 'Needs Improvement', value: statusStats['Needs Improvement'], color: '#f59e0b' },
+  ];
+
+  const difficultyChartData = (['beginner', 'intermediate', 'advanced'] as DifficultyLevel[]).map(difficulty => {
+    const count = submissions.filter((submission) => {
+      const assignment = assignments.find((item) => item.id === submission.assignmentId);
+      return assignment?.difficulty === difficulty;
+    }).length;
+    return { name: difficulty, count };
+  });
 
   return (
     <div className="mx-4 mb-20 flex flex-col gap-6 md:mx-20 md:mb-60">
@@ -302,71 +318,44 @@ export default function EmployerDashboard() {
         </p>
 
         <div className="mt-5 grid gap-6 lg:grid-cols-2">
-          <div className="rounded-xl border border-gray-200 p-4">
+          <div className="rounded-xl border border-gray-200 p-4 h-[300px]">
             <p className="mb-4 text-sm font-semibold text-slate-700">
               Submission Status Distribution
             </p>
-            {(
-              ["Accepted", "Pending", "Needs Improvement"] as SubmissionStatus[]
-            ).map((status) => {
-              const value = statusStats[status];
-              const percent = Math.round((value / totalSubmissions) * 100);
-              return (
-                <div key={status} className="mb-3">
-                  <div className="mb-1 flex items-center justify-between text-xs text-slate-600">
-                    <span>{status}</span>
-                    <span>
-                      {value} ({percent}%)
-                    </span>
-                  </div>
-                  <div className="h-2.5 rounded-full bg-slate-100">
-                    <div
-                      style={{ width: `${percent}%` }}
-                      className={`h-2.5 rounded-full ${
-                        status === "Accepted"
-                          ? "bg-green-500"
-                          : status === "Pending"
-                            ? "bg-blue-500"
-                            : "bg-amber-500"
-                      }`}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={statusChartData}
+                  cx="50%"
+                  cy="45%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                >
+                  {statusChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <RechartsTooltip />
+                <Legend verticalAlign="bottom" height={36}/>
+              </PieChart>
+            </ResponsiveContainer>
           </div>
 
-          <div className="rounded-xl border border-gray-200 p-4">
+          <div className="rounded-xl border border-gray-200 p-4 h-[300px]">
             <p className="mb-4 text-sm font-semibold text-slate-700">
               Submissions by Difficulty
             </p>
-            {(
-              ["beginner", "intermediate", "advanced"] as DifficultyLevel[]
-            ).map((difficulty) => {
-              const count = submissions.filter((submission) => {
-                const assignment = assignments.find(
-                  (item) => item.id === submission.assignmentId,
-                );
-                return assignment?.difficulty === difficulty;
-              }).length;
-              const percent = Math.round((count / totalSubmissions) * 100);
-              return (
-                <div key={difficulty} className="mb-3">
-                  <div className="mb-1 flex items-center justify-between text-xs text-slate-600">
-                    <span className="capitalize">{difficulty}</span>
-                    <span>
-                      {count} ({percent}%)
-                    </span>
-                  </div>
-                  <div className="h-2.5 rounded-full bg-slate-100">
-                    <div
-                      style={{ width: `${percent}%` }}
-                      className="h-2.5 rounded-full bg-[#6633FF]"
-                    />
-                  </div>
-                </div>
-              );
-            })}
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={difficultyChartData} margin={{ top: 20, right: 30, left: -20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="name" tick={{fontSize: 12}} style={{textTransform: 'capitalize'}}/>
+                <YAxis tick={{fontSize: 12}} allowDecimals={false} />
+                <RechartsTooltip cursor={{fill: 'transparent'}} />
+                <Bar dataKey="count" fill="#6633FF" radius={[4, 4, 0, 0]} barSize={40} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       </section>

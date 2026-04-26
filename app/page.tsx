@@ -51,11 +51,10 @@ export default function Home() {
             />
           </div>
           <h1 className="text-3xl font-bold text-white mb-4">
-            Online Assessment
+            Assignment & Learning Analytics Platform
           </h1>
           <p className="text-white/80 text-base leading-relaxed max-w-[280px]">
-            The premium platform for conducting secure and scalable online
-            assessments.
+            Bridge the gap between instruction and evaluation.
           </p>
         </div>
 

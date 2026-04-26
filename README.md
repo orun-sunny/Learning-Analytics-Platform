@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Learning Analytics Platform
 
-## Getting Started
+A dynamic, role-based educational platform designed to bridge the gap between instructors and students (candidates) for Phero team. The platform features dedicated portals for assignment management, real-time feedback, smart AI-assisted teaching tools, and interactive data visualizations. 
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. Role-Based Access Control & Authentication (Without NextAuth)
+Instead of relying on heavy server-side authentication libraries like NextAuth, this project implements a fast, client-side **Role-Based Access Control (RBAC)** system using **Zustand** and `localStorage`. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Session Management:** The `useAuthStore` manages the global authentication state (`user`, `isAuthenticated`). It assigns specific roles (`instructor` or `student`) upon login.
+- **Route Protection:** Layout files (`app/instructor/layout.tsx` and `app/candidate/layout.tsx`) actively listen to the authentication state. If a user attempts to access a portal they do not have the role for (e.g., a student trying to access the instructor dashboard), the system instantly redirects them to the home page.
+- **Data Persistence:** User sessions and submissions are persisted in the browser's local storage via Zustand's `persist` middleware, ensuring state is not lost upon page refresh.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. The "Smart" Element: AI-Assisted Teaching
+To significantly reduce an instructor's manual workload, the platform integrates strategic **Smart Assistance** logic. Rather than requiring external LLM API keys for the demo, this feature uses algorithmic pattern matching to simulate intelligent automation:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Auto-Generating Feedback:** When an instructor reviews a student's submission note, the `generatePreliminaryFeedback` algorithm analyzes the text for keywords related to code quality (e.g., "test", "complexity", "documentation"). It instantly drafts personalized, constructive feedback outlining the student's strengths and suggesting specific next steps.
+- **Refining Assignment Descriptions:** Instructors can use the `refineAssignmentDescription` tool to optimize their assignment instructions. Based on the selected difficulty level (beginner, intermediate, advanced), the system automatically structures the description to include expected outcomes, deliverables, and reflection points.
 
-## Learn More
+### 3. Data Visualization with Recharts
+To help instructors quickly identify struggling students and optimize their teaching strategies, raw submission data is transformed into actionable insights using **Recharts**.
 
-To learn more about Next.js, take a look at the following resources:
+- **Submission Status Distribution (Donut Chart):** Visualizes the exact proportion of submissions that are "Accepted", "Pending", or "Needs Improvement". If the "Needs Improvement" slice grows too large, the instructor knows to intervene and provide a class-wide review.
+- **Submissions by Difficulty (Bar Chart):** Tracks the volume of submissions across Beginner, Intermediate, and Advanced assignments. This helps the instructor gauge student engagement and determine if the curriculum is advancing at the right pace.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Framework:** Next.js (App Router)
+- **Styling:** Tailwind CSS + Lucide React (Icons)
+- **State Management:** Zustand (with persist middleware)
+- **Charts/Analytics:** Recharts
+- **Forms & Validation:** React Hook Form + Zod
 
-## Deploy on Vercel
+## 💻 Getting Started
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. **Install Dependencies:**
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. **Run the Development Server:**
+   ```bash
+   npm run dev
+   ```
+
+3. **Testing Roles (Important Note):** 
+   Because this application uses Local Storage to persist data instead of a backend database, **you must test the Instructor and Candidate flows in the exact same browser window**. If you open the Instructor portal in Chrome and the Candidate portal in an Incognito window, they will not share the same local storage state.
+
+   *Flow: Log in as Candidate -> Submit Assignment -> Logout -> Log in as Instructor -> Review -> Logout -> Log in as Candidate -> View Feedback.*
