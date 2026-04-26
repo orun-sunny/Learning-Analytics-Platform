@@ -49,7 +49,7 @@ export default function EmployerLayout({
             <div
               className="w-[90px] h-6 relative mr-4 md:mr-[100px] cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() =>
-                router.push(isAuthenticated ? "/employer/dashboard" : "/")
+                router.push(isAuthenticated ? "/instructor/dashboard" : "/")
               }
             >
               <Image
